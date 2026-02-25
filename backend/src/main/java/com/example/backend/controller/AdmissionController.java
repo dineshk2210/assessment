@@ -28,10 +28,11 @@ public class AdmissionController {
 
     @PostMapping("/allocate")
     public Admission allocate(@RequestParam Long applicantId,
-                              @RequestParam Long programId,
-                              @RequestParam String quotaType) {
+            @RequestParam Long programId,
+            @RequestParam String quotaType,
+            @RequestParam(required = false) String allotmentNumber) {
 
-        return admissionService.allocateSeat(applicantId, programId, quotaType);
+        return admissionService.allocateSeat(applicantId, programId, quotaType, allotmentNumber);
     }
 
     @PostMapping("/confirm/{id}")
@@ -41,7 +42,7 @@ public class AdmissionController {
 
     @PutMapping("/{id}/fee")
     public Admission updateFeeStatus(@PathVariable Long id,
-                                    @RequestParam String status) {
+            @RequestParam String status) {
 
         Admission admission = admissionService.updateFeeStatus(id, status);
         return admission;

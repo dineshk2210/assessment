@@ -97,3 +97,33 @@ li {
   margin: 5px 0 0;
   font-size: 14px;
 }
+
+.flow-selector {
+  display: flex;
+  gap: 10px;
+  background-color: #f4f4f4;
+  padding: 5px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.flow-selector button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.flow-selector button.btn-active {
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  color: #007bff;
+}
+
+.flow-selector button:hover:not(.btn-active) {
+  background-color: #e9e9e9;
+}

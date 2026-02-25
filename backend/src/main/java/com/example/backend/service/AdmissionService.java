@@ -24,7 +24,7 @@ public class AdmissionService {
     private final QuotaRepository quotaRepo;
 
     @Transactional
-    public Admission allocateSeat(Long applicantId, Long programId, String quotaType) {
+    public Admission allocateSeat(Long applicantId, Long programId, String quotaType, String allotmentNumber) {
 
         Applicant applicant = applicantRepo.findById(applicantId)
                 .orElseThrow(() -> new RuntimeException("Applicant not found"));
@@ -35,10 +35,14 @@ public class AdmissionService {
         Quota quota = quotaRepo.findByProgramIdAndQuotaType(programId, quotaType)
                 .orElseThrow(() -> new RuntimeException("Quota not found"));
 
-        // Check if documents are verified
-        if (!"Verified".equals(applicant.getDocumentStatus())) {
-            throw new RuntimeException("Cannot allocate seat. Applicant documents are not verified.");
+        // Check for allotment number if Government Quota (KCET/COMEDK)
+        if (("KCET".equals(quotaType) || "COMEDK".equals(quotaType)) &&
+                (allotmentNumber == null || allotmentNumber.trim().isEmpty())) {
+            throw new RuntimeException("Allotment Number is required for " + quotaType + " quota");
         }
+
+        // NOTE: Relaxed strict document check for allocation (Seat Locking)
+        // Document verification will be enforced during final confirmation.
 
         // Check if applicant is already allocated/confirmed
         if (admissionRepo.existsByApplicantId(applicantId)) {
@@ -55,6 +59,7 @@ public class AdmissionService {
         admission.setApplicant(applicant);
         admission.setProgram(program);
         admission.setQuota(quota);
+        admission.setAllotmentNumber(allotmentNumber);
         admission.setStatus("Allocated");
         admission.setFeeStatus("Pending");
 
@@ -84,6 +89,11 @@ public class AdmissionService {
 
         Admission admission = admissionRepo.findById(admissionId)
                 .orElseThrow(() -> new RuntimeException("Admission not found"));
+
+        // Enforce document verification for final admission confirmation
+        if (!"Verified".equals(admission.getApplicant().getDocumentStatus())) {
+            throw new RuntimeException("Cannot confirm admission. Applicant documents are not verified.");
+        }
 
         if (!"Paid".equals(admission.getFeeStatus())) {
             throw new RuntimeException("Fee not paid. Cannot confirm admission.");
