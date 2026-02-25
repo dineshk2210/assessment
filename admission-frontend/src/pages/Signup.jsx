@@ -23,12 +23,18 @@ const Signup = () => {
     return (
         <div className="auth-container">
             <form className="auth-form" onSubmit={handleSubmit}>
-                <h2>Signup</h2>
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <div style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--primary)', fontFamily: 'Outfit' }}>
+                        ADMISSION <span style={{ color: 'var(--text-main)' }}>PRO</span>
+                    </div>
+                    <p className="subtitle">Create an account to manage admissions.</p>
+                </div>
                 {error && <p className="error">{error}</p>}
                 <div className="form-group">
                     <label>Username</label>
                     <input
                         type="text"
+                        placeholder="Choose a username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
@@ -38,6 +44,7 @@ const Signup = () => {
                     <label>Password</label>
                     <input
                         type="password"
+                        placeholder="Create a password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -51,9 +58,9 @@ const Signup = () => {
                         <option value="MANAGEMENT">Management</option>
                     </select>
                 </div>
-                <button type="submit">Signup</button>
-                <p>
-                    Already have an account? <Link to="/login">Login here</Link>
+                <button type="submit" style={{ width: '100%', marginTop: '1rem' }}>Signup</button>
+                <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--secondary)' }}>
+                    Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>Login here</Link>
                 </p>
             </form>
         </div>

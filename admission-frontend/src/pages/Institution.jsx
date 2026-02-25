@@ -39,43 +39,57 @@ function Institution() {
   };
 
   return (
-    <div className="page">
-      <div className="page-content">
-        <div className="card">
-          <h2>Create Institution</h2>
+    <div>
+      <div className="page-header">
+        <h1>Institutions</h1>
+        <p className="subtitle">Manage education institutions and their intake capacities.</p>
+      </div>
 
-          <form onSubmit={handleSubmit}>
+      <div className="card">
+        <h2 className="mb-4">Create Institution</h2>
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Institution Code</label>
             <input
-              placeholder="Institution Code"
+              placeholder="e.g. MIT, HARVARD"
               value={form.code}
               onChange={(e) => setForm({ ...form, code: e.target.value })}
               required
             />
+          </div>
 
+          <div className="form-group">
+            <label>Institution Name</label>
             <input
-              placeholder="Institution Name"
+              placeholder="Full name of the institution"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               required
             />
+          </div>
 
+          <div className="form-group">
+            <label>Intake Capacity</label>
             <input
               type="number"
-              placeholder="Institution Intake Cap"
+              placeholder="Maximum number of students"
               value={form.maxIntake}
               onChange={(e) => setForm({ ...form, maxIntake: e.target.value })}
               required
             />
+          </div>
 
-            <button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Save Institution"}
-            </button>
-          </form>
-        </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save Institution"}
+          </button>
+        </form>
+      </div>
 
-        <div className="card">
-          <h3>Institution List</h3>
-          <table style={{ width: "100%", textAlign: "left" }}>
+      <div className="card mt-4">
+        <h2 className="mb-4">Institution List</h2>
+        <div className="table-container">
+          <table>
             <thead>
               <tr>
                 <th>Code</th>
@@ -86,7 +100,7 @@ function Institution() {
             <tbody>
               {institutions.map((inst) => (
                 <tr key={inst.id}>
-                  <td>{inst.code}</td>
+                  <td style={{ fontWeight: 600 }}>{inst.code}</td>
                   <td>{inst.name}</td>
                   <td>{inst.maxIntake}</td>
                 </tr>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, Link, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import Institution from "./pages/Institution";
 import Program from "./pages/Program";
@@ -17,21 +17,24 @@ function Navbar() {
 
   return (
     <nav>
-      <Link to="/dashboard">Dashboard</Link>
+      <div className="nav-logo" style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--primary)', fontFamily: 'Outfit' }}>
+        ADMISSION <span style={{ color: 'var(--text-main)' }}>PRO</span>
+      </div>
+      <NavLink to="/dashboard">Dashboard</NavLink>
       {user.role === "ADMIN" && (
         <>
-          <Link to="/institution">Institution</Link>
-          <Link to="/program">Program</Link>
-          <Link to="/quota">Quota</Link>
+          <NavLink to="/institution">Institution</NavLink>
+          <NavLink to="/program">Program</NavLink>
+          <NavLink to="/quota">Quota</NavLink>
         </>
       )}
       {(user.role === "ADMIN" || user.role === "ADMISSION_OFFICER") && (
         <>
-          <Link to="/applicant">Applicant</Link>
-          <Link to="/allocation">Allocation</Link>
+          <NavLink to="/applicant">Applicant</NavLink>
+          <NavLink to="/allocation">Allocation</NavLink>
         </>
       )}
-      <button onClick={logout} style={{ marginLeft: "auto", cursor: "pointer" }}>
+      <button onClick={logout} className="logout-btn">
         Logout ({user.username})
       </button>
     </nav>
@@ -46,57 +49,65 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
+        {/* Protected Routes wrapped in .page container */}
         <Route
-          path="/dashboard"
+          path="/*"
           element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
+            <main className="page">
+              <Routes>
+                <Route
+                  path="dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="institution"
+                  element={
+                    <ProtectedRoute allowedRoles={["ADMIN"]}>
+                      <Institution />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="program"
+                  element={
+                    <ProtectedRoute allowedRoles={["ADMIN"]}>
+                      <Program />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="quota"
+                  element={
+                    <ProtectedRoute allowedRoles={["ADMIN"]}>
+                      <Quota />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="applicant"
+                  element={
+                    <ProtectedRoute allowedRoles={["ADMIN", "ADMISSION_OFFICER"]}>
+                      <Applicant />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="allocation"
+                  element={
+                    <ProtectedRoute allowedRoles={["ADMIN", "ADMISSION_OFFICER"]}>
+                      <Allocation />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
+            </main>
           }
         />
-        <Route
-          path="/institution"
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN"]}>
-              <Institution />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/program"
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN"]}>
-              <Program />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/quota"
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN"]}>
-              <Quota />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/applicant"
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN", "ADMISSION_OFFICER"]}>
-              <Applicant />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/allocation"
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN", "ADMISSION_OFFICER"]}>
-              <Allocation />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Redirect root to dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
   );

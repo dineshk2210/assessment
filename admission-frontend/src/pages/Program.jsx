@@ -112,100 +112,131 @@ function Program() {
   };
 
   return (
-    <div className="page">
+    <div>
+      <div className="page-header">
+        <h1>Programs</h1>
+        <p className="subtitle">Configure and manage academic programs across institutions.</p>
+      </div>
+
       <div className="card">
-        <h2>{editingId ? "Edit Program" : "Create Program"}</h2>
+        <h2 className="mb-4">{editingId ? "Edit Program" : "Create Program"}</h2>
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <input
-            placeholder="Program Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
-          />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            <div className="form-group">
+              <label>Program Name</label>
+              <input
+                placeholder="e.g. Computer Science and Engineering"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                required
+              />
+            </div>
 
-          <input
-            placeholder="Program Code"
-            value={form.code}
-            onChange={(e) => setForm({ ...form, code: e.target.value })}
-            required
-          />
+            <div className="form-group">
+              <label>Program Code</label>
+              <input
+                placeholder="e.g. CS101"
+                value={form.code}
+                onChange={(e) => setForm({ ...form, code: e.target.value })}
+                required
+              />
+            </div>
 
-          <select
-            value={form.courseType}
-            onChange={(e) =>
-              setForm({ ...form, courseType: e.target.value })
-            }
-          >
-            <option value="UG">UG</option>
-            <option value="PG">PG</option>
-          </select>
+            <div className="form-group">
+              <label>Course Type</label>
+              <select
+                value={form.courseType}
+                onChange={(e) =>
+                  setForm({ ...form, courseType: e.target.value })
+                }
+              >
+                <option value="UG">Undergraduate (UG)</option>
+                <option value="PG">Postgraduate (PG)</option>
+              </select>
+            </div>
 
-          <input
-            placeholder="Academic Year"
-            value={form.academicYear}
-            onChange={(e) =>
-              setForm({ ...form, academicYear: e.target.value })
-            }
-            required
-          />
+            <div className="form-group">
+              <label>Academic Year</label>
+              <input
+                placeholder="e.g. 2024-25"
+                value={form.academicYear}
+                onChange={(e) =>
+                  setForm({ ...form, academicYear: e.target.value })
+                }
+                required
+              />
+            </div>
 
-          <input
-            type="number"
-            placeholder="Total Intake"
-            value={form.totalIntake}
-            onChange={(e) =>
-              setForm({ ...form, totalIntake: e.target.value })
-            }
-            required
-          />
+            <div className="form-group">
+              <label>Total Intake</label>
+              <input
+                type="number"
+                placeholder="Total seats available"
+                value={form.totalIntake}
+                onChange={(e) =>
+                  setForm({ ...form, totalIntake: e.target.value })
+                }
+                required
+              />
+            </div>
 
-          <select
-            value={form.institutionId}
-            onChange={(e) =>
-              setForm({ ...form, institutionId: e.target.value })
-            }
-            required
-          >
-            <option value="">Select Institution</option>
-            {institutions.map((inst) => (
-              <option key={inst.id} value={inst.id}>
-                {inst.name}
-              </option>
-            ))}
-          </select>
+            <div className="form-group">
+              <label>Institution</label>
+              <select
+                value={form.institutionId}
+                onChange={(e) =>
+                  setForm({ ...form, institutionId: e.target.value })
+                }
+                required
+              >
+                <option value="">Select Institution</option>
+                {institutions.map((inst) => (
+                  <option key={inst.id} value={inst.id}>
+                    {inst.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div className="flex gap-2 mt-4">
             <button type="submit">{editingId ? "Update Program" : "Save Program"}</button>
-            {editingId && <button type="button" onClick={cancelEdit} style={{ background: "#666" }}>Cancel</button>}
+            {editingId && <button type="button" onClick={cancelEdit} className="secondary">Cancel</button>}
           </div>
         </form>
       </div>
 
-      <div className="card">
-        <h3>Program List</h3>
-        <table style={{ width: "100%", textAlign: "left" }}>
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Name</th>
-              <th>Intake</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {programs.map((prog) => (
-              <tr key={prog.id}>
-                <td>{prog.code}</td>
-                <td>{prog.name}</td>
-                <td>{prog.totalIntake}</td>
-                <td>
-                  <button onClick={() => handleEdit(prog)} style={{ padding: "4px 8px", fontSize: "0.8rem" }}>Edit</button>
-                </td>
+      <div className="card mt-4">
+        <h2 className="mb-4">Program List</h2>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Year</th>
+                <th>Intake</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {programs.map((prog) => (
+                <tr key={prog.id}>
+                  <td style={{ fontWeight: 600 }}>{prog.code}</td>
+                  <td>{prog.name}</td>
+                  <td>{prog.courseType}</td>
+                  <td>{prog.academicYear}</td>
+                  <td>{prog.totalIntake}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    <button onClick={() => handleEdit(prog)} className="secondary" style={{ padding: "0.25rem 0.75rem", fontSize: "0.75rem" }}>Edit</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
