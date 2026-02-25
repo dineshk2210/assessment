@@ -39,7 +39,8 @@ nav a:hover {
 }
 
 /* ===== FORM ===== */
-input, select {
+input,
+select {
   width: 100%;
   padding: 10px;
   border: 1px solid #d1d5db;
@@ -120,10 +121,112 @@ li {
 
 .flow-selector button.btn-active {
   background-color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   color: #007bff;
 }
 
 .flow-selector button:hover:not(.btn-active) {
   background-color: #e9e9e9;
+}
+
+/* ===== AUTH ===== */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f4f8fc 0%, #e5eef9 100%);
+  padding: 20px;
+}
+
+.auth-form {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-form:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form h2 {
+  margin-top: 0;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #1e3a8a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.auth-form .form-group {
+  margin-bottom: 20px;
+}
+
+.auth-form .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.auth-form input,
+.auth-form select {
+  margin-bottom: 0;
+  border: 1.5px solid #e5e7eb;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-form input:focus,
+.auth-form select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.auth-form button:active {
+  transform: scale(0.98);
+}
+
+.auth-form p {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.auth-form p a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-form p a:hover {
+  text-decoration: underline;
+}
+
+.auth-form .error {
+  background-color: #fee2e2;
+  color: #dc2626;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid #fecaca;
 }
